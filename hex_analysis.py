@@ -24,7 +24,7 @@ class HexAnalysis:
                 print_fields.append(('undefined', _printhex(self.data[curr_addr:addr_to])))
                 curr_addr = addr_from
 
-            print('Handle {},{},{},{}'.format(name, addr_from, addr_to, f_type))
+            #print('Handle {},{},{},{}'.format(name, addr_from, addr_to, f_type))
             title = '{}: {} {}:{}'.format(name, f_type, addr_from, addr_to)
             if f_type in ['bytes', 'bytestring']:
                 print_fields.append((title, _printhex(self.data[addr_from:addr_to])))
@@ -94,5 +94,5 @@ class HexAnalysis:
         self.fields.append((name, self.addr, r, 'string', encoding))
         self.addr = r
 
-    def diff(analyses):
-        pass
+def diff(analyses):
+    pass

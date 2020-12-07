@@ -12,7 +12,6 @@ def pretender_from_data(data: bytes):
 
     # If no password, 0x78
     # If password, 0x78-terminated line
-    print(h.curr_byte())
     if h.curr_byte() == 0x78:
         # No password
         h.bytefield('no password', 2)
@@ -52,7 +51,7 @@ def diff_pretenders(filenames):
             data = f.read()
         pretenders.append(pretender_from_data(data))
 
-    HexAnalysis.diff(*pretenders)
+    hex_analysis.diff(pretenders)
 
 def main():
     if len(sys.argv) == 1:
