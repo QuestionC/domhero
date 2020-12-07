@@ -1,8 +1,12 @@
 import hex_analysis
 import dom5codec
+import sys
+
 
 def main():
-    import sys
+    if len(sys.argv) == 1:
+        print('python phex.py <filename>')
+        sys.exit()
 
     filename = sys.argv[1]
 
