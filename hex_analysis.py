@@ -12,6 +12,18 @@ class HexAnalysis:
         self.fields = []
 
     def __str__(self):
+        print_fields = self.str_prep()
+
+        result = ''
+        for fieldname,fielddata in print_fields:
+            result += fieldname
+            result += '\n'
+            result += str(fielddata)
+            result += '\n'
+            result += '\n'
+        return result
+
+    def str_prep(self):
         print_fields = []
 
         curr_addr = 0;
@@ -50,15 +62,8 @@ class HexAnalysis:
         # All bytes after the defined fields
         if curr_addr < len(self.data):
             print_fields.append(('undefined: {}:{}'.format(curr_addr, len(self.data)), _printhex(self.data[curr_addr:len(self.data)])))
-
-        result = ''
-        for fieldname,fielddata in print_fields:
-            result += fieldname
-            result += '\n'
-            result += str(fielddata)
-            result += '\n'
-            result += '\n'
-        return result
+        
+        return print_fields
 
     def curr_byte(self):
         return self.data[self.addr]
@@ -95,4 +100,20 @@ class HexAnalysis:
         self.addr = r
 
 def diff(analyses):
-    pass
+    diff_us = [x.str_prep() for x in analyses]
+
+    # This should match each element by field offset
+    for field in zip(*diff_us):
+        # Each field is a 2ple.  Zip the first elements and second elements together
+        field_names,field_data = zip(*field)
+
+        nameset = set(field_names)
+        if len(nameset) > 1:
+            print ('WARNING: field name mismatch')
+            print (nameset)
+
+        if any(d != field_data[0] for d in field_data):
+            # There's a diff so print it
+            print (field_names[0])
+            print ('\n---\n'.join(str(d) for d in field_data))
+            print('\n')
