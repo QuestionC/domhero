@@ -94,4 +94,5 @@ class HexAnalysis:
         self.fields.append((name, self.addr, r, 'string', encoding))
         self.addr = r
 
-
+    def diff(analyses):
+        pass
