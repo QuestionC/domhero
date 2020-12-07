@@ -46,8 +46,6 @@ class HexAnalysis:
                 print_fields.append((title, val))
                 curr_addr = addr_to
                 
-        def stringfields():
-            
         
         # All bytes after the defined fields
         if curr_addr < len(self.data):
