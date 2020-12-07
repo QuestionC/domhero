@@ -1,3 +1,7 @@
+# My files
+*.2h
+*.swp
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
