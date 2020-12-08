@@ -28,8 +28,22 @@ letter_dict[0x64] = '+'
 letter_dict[0x62] = '-'
 letter_dict[0x61] = '.'
 
+# 0x2E ^ 0x61 = 0x4F # '.'
+# 0x20 ^ 0x6F = 0x4F # ' '
+# 0x35 ^ 0x7A = 0x4F # '5'
+
+# It looks like for the special symbols, x ^ 0x4F gives you the encoding (and decoding) of x
+# Same holds true for the digits
+
+# 0x61 ^ 0x2E = 0x4F # 'a'
+# 0x5A ^ x015 = 0x4F # 'Z'
+
+# And letters !
+
+
 def decode(input, errors='strict'):
-    result = ''.join([letter_dict.get(x, '[{:02X}]'.format(x)) for x in input])
+    #result = ''.join([letter_dict.get(x, '[{:02X}]'.format(x)) for x in input])
+    result = ''.join(chr(x^0x4F) for x in input)
     return (result, len(result)) 
 
 def encode(input, errors='strict'):
