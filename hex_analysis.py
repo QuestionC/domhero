@@ -41,11 +41,7 @@ class HexAnalysis:
             data = self.data[addr_from:addr_to]
             if f_type in ['bytes', 'bytestring']:
                 printval = _printhex(data)
-            elif f_type == 'int8':
-                printval = int(data[0])
-            elif f_type == 'int16':
-                printval = int.from_bytes(data, byteorder='little', signed=True)
-            elif f_type == 'int32':
+            elif f_type in ('int8', 'int16', 'int32'):
                 printval = int.from_bytes(data, byteorder='little', signed=True)
             elif f_type == 'string':
                 printval = data.decode(f_data[0])
