@@ -37,40 +37,25 @@ class HexAnalysis:
                 print_fields.append(('undefined', printval, 'bytes', curr_addr, addr_from))
                 curr_addr = addr_from
 
-            #print('Handle {},{},{},{}'.format(name, addr_from, addr_to, f_type))
+            # Field types decoded here
             data = self.data[addr_from:addr_to]
             if f_type in ['bytes', 'bytestring']:
                 printval = _printhex(data)
-                #print_fields.append((title, _printhex(self.data[addr_from:addr_to])))
-                #curr_addr = addr_to
             elif f_type == 'int8':
                 printval = int(data[0])
-                #val = int(self.data[addr_from])
-                #print_fields.append((title, val))
-                #curr_addr = addr_to
             elif f_type == 'int16':
                 printval = int.from_bytes(data, byteorder='little', signed=True)
-                #val = int.from_bytes(self.data[addr_from:addr_to], byteorder='little', signed=True)
-                #print_fields.append((title, val))
-                #curr_addr = addr_to
             elif f_type == 'int32':
                 printval = int.from_bytes(data, byteorder='little', signed=True)
-                #val = int.from_bytes(self.data[addr_from:addr_to], byteorder='little', signed=True)
-                #print_fields.append((title, val))
-                #curr_addr = addr_to
             elif f_type == 'string':
                 printval = data.decode(f_data[0])
-                #val = self.data[addr_from:addr_to].decode(f_data[0])
-                #print_fields.append((title, val))
-                #curr_addr = addr_to
                 
             print_fields.append((name, printval, f_type, addr_from, addr_to))
             curr_addr = addr_to
 
-        # All bytes after the defined fields
+        # Dump all bytes after the defined fields
         if curr_addr < len(self.data):
             print_fields.append(('undefined', _printhex(self.data[curr_addr:len(self.data)]), 'bytes', curr_addr, len(self.data)))
-            #print_fields.append(('undefined: {}:{}'.format(curr_addr, len(self.data)), _printhex(self.data[curr_addr:len(self.data)])))
         
         return print_fields
 
@@ -125,4 +110,4 @@ def diff(analyses):
             # There's a diff so print it
             print (field_names[0])
             print ('\n---\n'.join(str(d) for d in field_data))
-            print('\n')
+            print()
