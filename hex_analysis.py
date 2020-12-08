@@ -15,8 +15,8 @@ class HexAnalysis:
         print_fields = self.str_prep()
 
         result = ''
-        for fieldname,fielddata in print_fields:
-            result += fieldname
+        for fieldname,fielddata,fieldtype,addr_from,addr_to in print_fields:
+            result += '{}: {} {}:{}'.format(fieldname, fieldtype, addr_from, addr_to)
             result += '\n'
             result += str(fielddata)
             result += '\n'
@@ -29,39 +29,48 @@ class HexAnalysis:
         curr_addr = 0;
         for field in self.fields:
             name,addr_from,addr_to,f_type,*f_data = field
-
+            
             # If for some reason undefined bytes, dump them
             if curr_addr < addr_from:
                 # Unclassified bytes
-                print_fields.append(('undefined', _printhex(self.data[curr_addr:addr_to])))
+                printval = _printhex(self.data[curr_addr:addr_to])
+                print_fields.append(('undefined', printval, 'bytes', curr_addr, addr_from))
                 curr_addr = addr_from
 
             #print('Handle {},{},{},{}'.format(name, addr_from, addr_to, f_type))
-            title = '{}: {} {}:{}'.format(name, f_type, addr_from, addr_to)
+            data = self.data[addr_from:addr_to]
             if f_type in ['bytes', 'bytestring']:
-                print_fields.append((title, _printhex(self.data[addr_from:addr_to])))
-                curr_addr = addr_to
+                printval = _printhex(data)
+                #print_fields.append((title, _printhex(self.data[addr_from:addr_to])))
+                #curr_addr = addr_to
             elif f_type == 'int8':
-                val = int(self.data[addr_from])
-                print_fields.append((title, val))
-                curr_addr = addr_to
+                printval = int(data[0])
+                #val = int(self.data[addr_from])
+                #print_fields.append((title, val))
+                #curr_addr = addr_to
             elif f_type == 'int16':
-                val = int.from_bytes(self.data[addr_from:addr_to], byteorder='little', signed=True)
-                print_fields.append((title, val))
-                curr_addr = addr_to
+                printval = int.from_bytes(data, byteorder='little', signed=True)
+                #val = int.from_bytes(self.data[addr_from:addr_to], byteorder='little', signed=True)
+                #print_fields.append((title, val))
+                #curr_addr = addr_to
             elif f_type == 'int32':
-                val = int.from_bytes(self.data[addr_from:addr_to], byteorder='little', signed=True)
-                print_fields.append((title, val))
-                curr_addr = addr_to
+                printval = int.from_bytes(data, byteorder='little', signed=True)
+                #val = int.from_bytes(self.data[addr_from:addr_to], byteorder='little', signed=True)
+                #print_fields.append((title, val))
+                #curr_addr = addr_to
             elif f_type == 'string':
-                val = self.data[addr_from:addr_to].decode(f_data[0])
-                print_fields.append((title, val))
-                curr_addr = addr_to
+                printval = data.decode(f_data[0])
+                #val = self.data[addr_from:addr_to].decode(f_data[0])
+                #print_fields.append((title, val))
+                #curr_addr = addr_to
                 
-        
+            print_fields.append((name, printval, f_type, addr_from, addr_to))
+            curr_addr = addr_to
+
         # All bytes after the defined fields
         if curr_addr < len(self.data):
-            print_fields.append(('undefined: {}:{}'.format(curr_addr, len(self.data)), _printhex(self.data[curr_addr:len(self.data)])))
+            print_fields.append(('undefined', _printhex(self.data[curr_addr:len(self.data)]), 'bytes', curr_addr, len(self.data)))
+            #print_fields.append(('undefined: {}:{}'.format(curr_addr, len(self.data)), _printhex(self.data[curr_addr:len(self.data)])))
         
         return print_fields
 
@@ -105,7 +114,7 @@ def diff(analyses):
     # This should match each element by field offset
     for field in zip(*diff_us):
         # Each field is a 2ple.  Zip the first elements and second elements together
-        field_names,field_data = zip(*field)
+        field_names,field_data,field_types,field_begins,field_ends = zip(*field)
 
         nameset = set(field_names)
         if len(nameset) > 1:
