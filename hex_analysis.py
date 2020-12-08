@@ -43,7 +43,7 @@ class HexAnalysis:
                 printval = _printhex(data)
             elif f_type in ('int8', 'int16', 'int32'):
                 printval = int.from_bytes(data, byteorder='little', signed=True)
-            elif f_type == 'string':
+            elif f_type in ['string', 'chars']:
                 printval = data.decode(f_data[0])
                 
             print_fields.append((name, printval, f_type, addr_from, addr_to))
@@ -59,8 +59,11 @@ class HexAnalysis:
         return self.data[self.addr]
 
     def bytefield(self, name, l):
-        # Assume we're adding to the end of fields
         self.fields.append((name, self.addr, self.addr + l, 'bytes'))
+        self.addr += l
+
+    def charfield(self, name, l, encoding='utf-8'):
+        self.fields.append((name, self.addr, self.addr + l, 'chars', encoding))
         self.addr += l
 
     def int8(self, name):
