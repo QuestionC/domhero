@@ -5,10 +5,12 @@ import sys
 def pretender_from_data(data: bytes): 
     h = hex_analysis.HexAnalysis(data)
     h.bytefield('head', 26)
+    #h.charfield('head', 26, encoding='dom5')
 
     h.int8('nation_id')
 
-    h.bytefield('dunno1', 20)
+    #h.bytefield('dunno1', 20)
+    h.charfield('gamename?', 20, encoding='dom5')
 
     # If no password, 0x78
     # If password, 0x78-terminated line
