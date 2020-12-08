@@ -24,6 +24,8 @@ for i in range(0, 10):
     letter_dict[val] = chr(letter)
 
 letter_dict[0x6F] = ' '
+letter_dict[0x64] = '+'
+letter_dict[0x62] = '-'
 letter_dict[0x61] = '.'
 
 def decode(input, errors='strict'):
