@@ -35,7 +35,13 @@ def pretender_from_data(data: bytes):
     h.bytefield('??', 4)
     h.bytefield('FF and 00', 20 + 6*16)
     h.bytefield('dom and scales', 10)
-
+    h.bytefield('??', 43)
+    h.int8('Chaos')
+    h.int8('Sloth')
+    h.int8('Cold')
+    h.int8('Death')
+    h.int8('Misf')
+    h.int8('Drain')
     return h
 
 def print_pretender(filename):
