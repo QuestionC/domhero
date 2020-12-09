@@ -44,6 +44,20 @@ def pretender_from_data(data: bytes):
     h.int8('Death')
     h.int8('Misf')
     h.int8('Drain')
+    h.bytefield('4F', 1)
+    h.int32('awaken')
+    h.bytefield('zeroes', 8)
+    
+    n = h.int32('number of blesses')
+    h.int32('0')
+    for i in range(n):
+        h.int32('bless')
+    h.string('name', 0x4F, encoding='dom5')
+    h.bytefield('4F4FAC', 3)
+
+    h.charfield('D4000', 5, encoding='dom5')
+    h.bytefield('checksum', 2)
+
     return h
 
 def print_pretender(filename):

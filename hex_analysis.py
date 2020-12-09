@@ -75,8 +75,11 @@ class HexAnalysis:
         self.addr += 2 
     
     def int32(self, name):
+        data = self.data[self.addr:self.addr+4]
+        val = int.from_bytes(data, byteorder='little', signed=True)
         self.fields.append((name, self.addr, self.addr + 4, 'int32'))
         self.addr += 4
+        return val
 
     def bytestring(self, name, terminator):
         r = self.data.find(terminator, self.addr) + 1
