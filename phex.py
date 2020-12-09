@@ -2,6 +2,14 @@ import hex_analysis
 import dom5codec
 import sys
 
+blesses_dict = {
+        26: 'Defense',
+        21: 'Minor Cold Resist',
+        24: 'Water Walking',
+        24: 'Major Cold Resist',
+        58: 'Undead Regeneration'
+        }
+
 def pretender_from_data(data: bytes): 
     h = hex_analysis.HexAnalysis(data)
     h.bytefield('head', 26)
