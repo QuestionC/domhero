@@ -85,7 +85,7 @@ def diff_pretenders(filenames):
 
 def main():
     if len(sys.argv) == 1:
-        print('python phex.py <filename>')
+        print('python3 ' + sys.argv[0] + ' <pretender.2h>')
         sys.exit()
 
     elif len(sys.argv) == 2:
